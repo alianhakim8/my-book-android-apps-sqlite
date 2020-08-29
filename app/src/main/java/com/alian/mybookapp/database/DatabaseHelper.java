@@ -68,4 +68,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    public void updateData(String row_id, String title, String author, String pages) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_TITLE, title);
+        values.put(COLUMN_AUTHOR, author);
+        values.put(COLUMN_PAGES, pages);
+
+        long result = db.update(TABLE_NAME, values, "_id=?", new String[]{row_id});
+        if (result == -1) {
+            Toast.makeText(context, "Failed to Update", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Successfully Update", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 }
