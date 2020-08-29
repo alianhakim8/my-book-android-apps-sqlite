@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AddActivity"
+            android:name=".activity.AddActivity"
             android:label="Add Book"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="My Book">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
