@@ -26,7 +26,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = title_input.getText().toString().trim();
                 String author = author_input.getText().toString().trim();
-                int pages = Integer.parseInt(pages_input.getText().toString().trim());
+                int pages = Integer.valueOf(pages_input.getText().toString().trim());
                 DatabaseHelper myDB = new DatabaseHelper(AddActivity.this);
                 myDB.addBook(title, author, pages);
             }
