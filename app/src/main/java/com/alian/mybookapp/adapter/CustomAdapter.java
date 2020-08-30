@@ -1,11 +1,15 @@
 package com.alian.mybookapp.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +25,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private Context context;
     Activity activity;
+    //    ProgressDialog progressDialog = new ProgressDialog(context);
     private ArrayList book_id, book_title, book_author, book_pages;
+    Animation translate_anim;
 
     public CustomAdapter(Activity activity, Context context, ArrayList book_id, ArrayList book_title, ArrayList book_author, ArrayList book_pages) {
         this.activity = activity;
@@ -42,6 +48,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+//        progressDialog.setMessage("Loading");
+//        progressDialog.show();
         holder.book_id.setText(String.valueOf(book_id.get(position)));
         holder.book_title.setText(String.valueOf(book_title.get(position)));
         holder.book_author.setText(String.valueOf(book_author.get(position)));
@@ -76,6 +84,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             book_author = itemView.findViewById(R.id.book_author_txt);
             book_pages = itemView.findViewById(R.id.book_pages_txt);
             layout = itemView.findViewById(R.id.main_layout);
+            // Animate RecyclerView
+            translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_animation);
+            layout.setAnimation(translate_anim);
         }
     }
 

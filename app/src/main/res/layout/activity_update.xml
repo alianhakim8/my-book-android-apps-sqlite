@@ -7,6 +7,18 @@
     android:padding="30dp"
     tools:context=".activity.AddActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Update Book"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/title_input2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/title_input2"
         android:layout_width="match_parent"
@@ -53,4 +65,15 @@
         app:layout_constraintEnd_toEndOf="@+id/pages_input"
         app:layout_constraintStart_toStartOf="@+id/pages_input2"
         app:layout_constraintTop_toBottomOf="@+id/pages_input2" />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:textAllCaps="false"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="@+id/update_button"
+        app:layout_constraintStart_toStartOf="@+id/pages_input2"
+        app:layout_constraintTop_toBottomOf="@+id/update_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

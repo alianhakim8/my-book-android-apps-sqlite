@@ -1,14 +1,22 @@
 package com.alian.mybookapp.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alian.mybookapp.adapter.CustomAdapter;
@@ -25,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapter adapter;
     DatabaseHelper db;
     ArrayList<String> book_id, book_title, book_author, book_pages;
+    ImageView empty_imageView;
+    TextView no_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +48,21 @@ public class MainActivity extends AppCompatActivity {
         book_title = new ArrayList<>();
         book_author = new ArrayList<>();
         book_pages = new ArrayList<>();
+        empty_imageView = findViewById(R.id.empty_imageView);
+        no_data = findViewById(R.id.empty_txt);
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AddActivity.class));
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
         storeDataInArrays();
         adapter = new CustomAdapter(MainActivity.this, this, book_id, book_title, book_author, book_pages);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     @Override
@@ -62,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
     void storeDataInArrays() {
         Cursor cursor = db.readAllData();
         if (cursor.getCount() == 0) {
-            Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
+            empty_imageView.setVisibility(View.VISIBLE);
+            no_data.setVisibility(View.VISIBLE);
         } else {
             while (cursor.moveToNext()) {
                 book_id.add(cursor.getString(0));
@@ -70,6 +85,48 @@ public class MainActivity extends AppCompatActivity {
                 book_author.add(cursor.getString(2));
                 book_pages.add(cursor.getString(3));
             }
+            empty_imageView.setVisibility(View.GONE);
+            no_data.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete_all) {
+            confirmDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    void confirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete All ?");
+        builder.setMessage("Are you sure want to delete Book ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(MainActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+                db.deleteAllData();
+                // Refresh Activity
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
     }
 }

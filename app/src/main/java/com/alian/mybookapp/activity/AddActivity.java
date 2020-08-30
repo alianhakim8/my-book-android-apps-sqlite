@@ -29,6 +29,7 @@ public class AddActivity extends AppCompatActivity {
                 int pages = Integer.valueOf(pages_input.getText().toString().trim());
                 DatabaseHelper myDB = new DatabaseHelper(AddActivity.this);
                 myDB.addBook(title, author, pages);
+                finish();
             }
         });
     }
